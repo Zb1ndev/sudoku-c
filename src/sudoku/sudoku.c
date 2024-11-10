@@ -15,7 +15,6 @@
             }
         }
         return true;
-        return true;
     }
     bool CheckGroups(uint8_t*** _board) {
         for (size_t g = 0; g < 9; g++) {
