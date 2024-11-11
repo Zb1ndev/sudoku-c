@@ -13,6 +13,7 @@ int main(void) {
         log("NOTE", "%sFailed to generate good board!\n", RED);
     DrawBoard(_board);
 
+    
     return 0;
     
 }

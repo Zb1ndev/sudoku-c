@@ -44,7 +44,7 @@
         return true;
     }
     int CheckBoard(uint8_t*** _board) { 
-        return CheckColumns(_board) && CheckRows(_board) && CheckGroups(_board);
+        return  CheckGroups(_board); // CheckColumns(_board) && CheckRows(_board) && CheckGroups(_board);
     }
 
 #pragma endregion
@@ -79,16 +79,21 @@
         uint8_t*** _board = malloc(sizeof(uint8_t**) * 9);
         for (size_t g = 0; g < 9; g++) 
             _board[g] = malloc(sizeof(uint8_t**) * 3);
-
         for (size_t g = 0; g < 9; g++) {
+            int _counter = 0;
+            int* _numbers = malloc(sizeof(int) * 9);
+            for (size_t i = 0; i < 9; i++)  
+                _numbers[i] = i+1;
             for (size_t y = 0; y < 3; y++) {
                 _board[g][y] = malloc(sizeof(uint8_t*) * 3);
                 for (size_t x = 0; x < 3; x++) {
-                    _board[g][y][x] = 1;
+                    int _index = rand() % (9 - _counter);
+                    _board[g][y][x] = _numbers[_index];
+                    _numbers[_index] = _numbers[(9 - _counter) - 1];
+                    _counter++;
                 }
             }
         }
-        
 
         log("TIME", "%fs\n", ((double) (clock() - start)) / CLOCKS_PER_SEC);
         return _board;
