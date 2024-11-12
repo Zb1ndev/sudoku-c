@@ -44,7 +44,7 @@
         return true;
     }
     int CheckBoard(uint8_t*** _board) { 
-        return  CheckGroups(_board); // CheckColumns(_board) && CheckRows(_board) && CheckGroups(_board);
+        return CheckColumns(_board) && CheckRows(_board) && CheckGroups(_board);
     }
 
 #pragma endregion
@@ -74,24 +74,37 @@
 
         srand(_seed);
         clock_t start = clock();
-
-        int _test = 0;
+        
+        // Generate Random Numbers 1..9 in each Group (3x3) 
         uint8_t*** _board = malloc(sizeof(uint8_t**) * 9);
-        for (size_t g = 0; g < 9; g++) 
-            _board[g] = malloc(sizeof(uint8_t**) * 3);
         for (size_t g = 0; g < 9; g++) {
             int _counter = 0;
-            int* _numbers = malloc(sizeof(int) * 9);
-            for (size_t i = 0; i < 9; i++)  
-                _numbers[i] = i+1;
+            int _numbers[9] = {1,2,3,4,5,6,7,8,9};
+            _board[g] = malloc(sizeof(uint8_t**) * 3);
             for (size_t y = 0; y < 3; y++) {
                 _board[g][y] = malloc(sizeof(uint8_t*) * 3);
                 for (size_t x = 0; x < 3; x++) {
                     int _index = rand() % (9 - _counter);
                     _board[g][y][x] = _numbers[_index];
-                    _numbers[_index] = _numbers[(9 - _counter) - 1];
-                    _counter++;
+                    _numbers[_index] = _numbers[(9 - _counter++) - 1];
                 }
+            }
+        }
+
+        // Sort Rows
+        for (size_t y = 0; y < 9; y++) {
+            if (((y+1) % 3) != 0) { 
+                
+                // Get Current Row and its Groups
+                // Get Duplicates
+                // Get Values Not in the Current Row
+                /* 
+                    Swap Values Around in the Groups ( 
+                        1st Row in a group gets the highest degree of freedom 
+                        2nd Row gets a lower degree of freedom and can only reference the row below it
+                        3rd should have its shit figured out
+                */ 
+
             }
         }
 

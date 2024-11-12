@@ -1,25 +1,5 @@
 public string SeedGenerator(List<KeyValuePair<string, int>> tile) {
 
-    string seed = "";
-
-    // Random Numbers 1-9 in Each Group
-    string n = "123456789", group = "abcdefghi";
-    for (int i = 0; i < 9; i++)
-    {
-        List<string> numbers = new List<string>();
-        foreach (char c in n) { numbers.Add(c.ToString()); }
-
-        foreach (KeyValuePair<string, int> kv in tile)
-        {
-            if (kv.Key[0].ToString() == group[i].ToString())
-            {
-                int random = rnd.Next(0, numbers.Count - 1);
-                tiles[kv.Key] = Int32.Parse(numbers[random]);
-                numbers.Remove(numbers[random]);
-            }
-        }
-    }
-
     // Sort Rows
     for (int i = 0; i < 9; i++)
     {

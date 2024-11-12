@@ -22,8 +22,8 @@
 bool CheckRows(uint8_t*** _board);
 bool CheckGroups(uint8_t*** _board);
 bool CheckColumns(uint8_t*** _board);
+int CheckBoard(uint8_t*** _board);
 
 uint8_t*** GenerateBoard(uint32_t _seed);
-int CheckBoard(uint8_t*** _board);
 
 void DrawBoard(uint8_t*** _board);
