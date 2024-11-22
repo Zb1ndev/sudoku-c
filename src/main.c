@@ -12,7 +12,6 @@ int main(void) {
     if (CheckBoard(_board) == false)
         log("NOTE", "%sFailed to generate good board!\n", RED);
     DrawBoard(_board);
-
     
     return 0;
     

@@ -70,6 +70,36 @@
 #pragma endregion
 #pragma region GENERATOR
 
+    void PrintBitmask(uint16_t _number) {
+        
+        for (int i = 15; i >= 0; i--) {
+            printf(_number & (1U << i) ? "1" : "0");
+            if (i % 4 == 0) 
+                printf(" ");
+        }
+        printf("\n");
+
+    }
+
+    uint16_t GetRowBitmask(uint8_t*** _board, uint8_t _row) {
+
+        uint16_t bitmask = 0;
+        uint8_t _offset = (((int)_row / 3) * 3);
+            
+        for (size_t g = 0; g < 3; g++) {
+            for (size_t x = 0; x < 3; x++) {
+                uint8_t _num = _board[g+_offset][_row%3][x];
+                bitmask |= (1 << (_num - 1));
+            }
+        }
+           
+        return bitmask;
+    }
+
+    uint16_t GetMissingNumbers(uint16_t _rowBitMask) {
+        return ~_rowBitMask;
+    }
+
     uint8_t*** GenerateBoard(uint32_t _seed) {
 
         srand(_seed);
@@ -92,21 +122,18 @@
         }
 
         // Sort Rows
-        for (size_t y = 0; y < 9; y++) {
-            if (((y+1) % 3) != 0) { 
-                
-                // Get Current Row and its Groups
-                // Get Duplicates
-                // Get Values Not in the Current Row
-                /* 
-                    Swap Values Around in the Groups ( 
-                        1st Row in a group gets the highest degree of freedom 
-                        2nd Row gets a lower degree of freedom and can only reference the row below it
-                        3rd should have its shit figured out
-                */ 
-
+        for (size_t r = 0; r < 9; r++) {
+            if ((r+1) % 3 != 0) {
+                uint16_t _missing = GetMissingNumbers(GetRowBitmask(_board, r));
+                for (size_t n = 0; n < 9; n++) {
+                    if (_missing & (1 << n)) { 
+                       
+                    }
+                }
             }
         }
+        
+       
 
         log("TIME", "%fs\n", ((double) (clock() - start)) / CLOCKS_PER_SEC);
         return _board;
