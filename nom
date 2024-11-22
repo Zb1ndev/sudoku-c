@@ -1,0 +1,1 @@
+build : gcc ./src/sudoku/sudoku.c ./src/main.c -o ./build/sudoku && ./build/sudoku
