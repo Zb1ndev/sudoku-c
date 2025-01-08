@@ -70,35 +70,27 @@
 #pragma endregion
 #pragma region GENERATOR
 
-    void PrintBitmask(uint16_t _number) {
+    uint8_t** GetRows(uint8_t*** _board, size_t _y) {
+
+        uint8_t** _res = malloc(3 * sizeof(uint8_t*));
+        for (size_t i = 0; i < 3; i++) 
+            _res[i] = malloc(9 * sizeof(uint8_t));    
+
+        for (size_t y = _y * 3; y < (_y * 3) + 3; y++) {
+            uint8_t _counter = 0; // X Position [1..9]
+            uint8_t _offset = (((size_t)y / 3) * 3); // [3x3] Group Offset
+            for (size_t g = 0; g < 3; g++) // Iterate hrough group
+                for (size_t x = 0; x < 3; x++) // Iterate through X positions of group
+                    _res[y%3][_counter++] = _board[g+_offset][y%3][x];
+        }
+
+        return _res;
+
+    }
+    uint8_t**  SortRow(uint8_t** _rows, uint8_t _row) {
         
-        for (int i = 15; i >= 0; i--) {
-            printf(_number & (1U << i) ? "1" : "0");
-            if (i % 4 == 0) 
-                printf(" ");
-        }
-        printf("\n");
-
     }
 
-    uint16_t GetRowBitmask(uint8_t*** _board, uint8_t _row) {
-
-        uint16_t bitmask = 0;
-        uint8_t _offset = (((int)_row / 3) * 3);
-            
-        for (size_t g = 0; g < 3; g++) {
-            for (size_t x = 0; x < 3; x++) {
-                uint8_t _num = _board[g+_offset][_row%3][x];
-                bitmask |= (1 << (_num - 1));
-            }
-        }
-           
-        return bitmask;
-    }
-
-    uint16_t GetMissingNumbers(uint16_t _rowBitMask) {
-        return ~_rowBitMask;
-    }
 
     uint8_t*** GenerateBoard(uint32_t _seed) {
 
@@ -121,21 +113,25 @@
             }
         }
 
-        // Sort Rows
-        for (size_t r = 0; r < 9; r++) {
-            if ((r+1) % 3 != 0) {
-                uint16_t _missing = GetMissingNumbers(GetRowBitmask(_board, r));
-                for (size_t n = 0; n < 9; n++) {
-                    if (_missing & (1 << n)) { 
-                       
-                    }
-                }
-            }
+        // Sort Board
+        /*
+            Rows -
+            For each group, we are going to manually sort the first two rows. To do this we will get all three rows in a array
+            get the duplicates and the values that are not existent of each and go about sorting the first 2 rows.
+
+            Columns - 
+            I think you do the same thing as in the rows but there is some redundant checks to ensure it makes a real board.
+        */
+
+        for (size_t g = 0; g < 3; g++) {
+
+            uint8_t** _rows = GetRows(_board, g);
+            for (size_t r=0; r<2; r++) 
+                SortRow(_rows, r);
+        
         }
         
-       
-
-        log("TIME", "%fs\n", ((double) (clock() - start)) / CLOCKS_PER_SEC);
+        log("TIME", "%fms\n", (((double) (clock() - start)) / CLOCKS_PER_SEC)*1000);
         return _board;
 
     }

@@ -24,6 +24,8 @@ bool CheckGroups(uint8_t*** _board);
 bool CheckColumns(uint8_t*** _board);
 int CheckBoard(uint8_t*** _board);
 
-uint8_t*** GenerateBoard(uint32_t _seed);
+uint8_t** GetRows(uint8_t*** _board, size_t _y);
+uint8_t** SortRow(uint8_t** _rows, uint8_t _row);
 
+uint8_t*** GenerateBoard(uint32_t _seed);
 void DrawBoard(uint8_t*** _board);
